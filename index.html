@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang=en><head><meta charset=utf-8 />
+<link rel=stylesheet href=style.css />
+<title>DeviantArt Gallery</title>
+<link rel=icon href=/favicon.ico /><meta name=theme-color content="#777">
+<meta name=viewport content="width=device-width">
+</head><body>
+
+<div class=pics id=pics></div>
+
+<div class=viewer id=vwr>
+  <div class=shrinkwrap id=sw>
+    <div id=head></div>
+    <div id=description></div>
+    <img id=fullViewImg />
+    <div id=tags></div>
+    <div id=related>
+      <div id=fromuser></div><div id=fromda></div><div id=fromlists></div>
+    </div>
+  </div>
+  <span previous onclick=turnPage(-1)>&#8249;</span><span next onclick=turnPage(1)>&#8250;</span><span close onclick=fullscreen(0);viewer("none")>&times;</span>
+</div>
+
+<div class=search id=search><input type=text id=searchbox placeholder=Search... /></div>
+
+<script src=scripts.js></script>
+</body></html>
