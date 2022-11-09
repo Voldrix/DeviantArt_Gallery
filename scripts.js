@@ -219,15 +219,15 @@ function view_search(openOrClose = 'open') {
   }
 }
 
-function searchDA(_s, popState=false) {
-  const _searchQuery = _s || document.getElementById('searchbox').value;
+function searchDA(_query, popState=false) {
+  const _searchQuery = _query || document.getElementById('searchbox').value;
   if(!_searchQuery) return;
   if(_searchQuery.startsWith('http')) {search_url(_searchQuery); return;}
   searchQueryRaw = _searchQuery;
-  searchQuery = _searchQuery.replace(/[$@#]+/g,'');
+  searchQuery = _searchQuery.replace(/[@#;:$<>"{}|~`*%]+/g,'');
   feedType = 'search';
-  if(searchQuery.charAt(0) === '#') feedType = 'search_tags';
-  if(searchQuery.charAt(0) === '@') feedType = 'user_gallery';
+  if(searchQueryRaw.charAt(0) === '#') {feedType = 'search_tags'; searchQuery = searchQuery.replace(/\s+/g,'');}
+  if(searchQueryRaw.charAt(0) === '@') {feedType = 'user_gallery'; searchQuery = searchQuery.replace(/\s+/g,'');}
   scrollingLocked = true;
   offset = 0;
   imgCount = 1;
