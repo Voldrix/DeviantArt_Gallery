@@ -65,6 +65,13 @@ uses the browser history API so you can navigate back even though the URL doesn'
 pull requests are welcome, especially for mobile compatibility, as I haven't tested that extensively\
 Just remember the goal of this project to keep the UI mostly invisible / minimal
 
+__ToDo__\
+keyboard scrolling is disabled in viewer until clicked\
+support authentication code method\
+/popular API endpoint is broken. (issue has already been [reported](https://github.com/wix-incubator/DeviantArt-API/issues/206))\
+keyboard control alternatives for mobile\
+maybe a service worker to cache API calls
+
 #### License
 [MIT License](LICENSE)
 
