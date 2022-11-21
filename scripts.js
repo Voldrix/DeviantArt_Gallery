@@ -38,9 +38,19 @@ else
   var token = getCookie('vsda-access');
 
 if(token) {
-  DA_API('dd').then(z => {prop(z)});
-  DA_API('feed').then(z => {prop(z)});
-  DA_API('popular').then(z => {prop(z)});
+  searchQueryRaw = new URLSearchParams(location.search).get('search');
+  did = new URLSearchParams(location.search).get('did');
+  if(searchQueryRaw)
+    searchDA(searchQueryRaw,null,false);
+  else {
+    DA_API('dd').then(z => {prop(z)});
+    DA_API('feed').then(z => {prop(z)});
+    DA_API('popular').then(z => {prop(z)});
+  }
+  if(did) {
+    viewer('flex',null,false);
+    turnPageR(new Event('notPopState'),did);
+  }
 }
 else
   window.location.href = 'https://www.deviantart.com/oauth2/authorize?response_type=token&client_id='+CLIENT_ID+'&redirect_uri='+REDIRECT_URL+'&scope=user%20browse%20browse.mlt&state=vs';
@@ -145,7 +155,8 @@ function viewer(openOrClose, pageNum, popState=false) {
   }
   else { //close
     document.body.style.overflow = 'auto';
-    if(!popState) history.pushState({'did':null,'search':searchQueryRaw},null);
+    const url = (searchQueryRaw) ? '?search='+encodeURIComponent(searchQueryRaw) : '.';
+    if(!popState) history.pushState({'did':null,'search':searchQueryRaw},null,url);
     document.title = searchQueryRaw || 'DeviantArt Gallery';
   }
 }
@@ -161,8 +172,9 @@ function turnPage(previousOrNext) {
   head.innerHTML = images[imgIndex-1].nextElementSibling.innerHTML;
   did = images[imgIndex-1].id;
   document.getElementById('tags').innerHTML = fromuser.innerHTML = fromda.innerHTML = fromlists.innerHTML = '';
-  if(backOrForward === 255 && previousOrNext != 0) history.pushState({'did':did,'search':searchQueryRaw},null);
-  else history.replaceState({'did':did,'search':searchQueryRaw},null);
+  const url = (searchQueryRaw) ? '?search='+encodeURIComponent(searchQueryRaw)+'&did='+did : '?did='+did;
+  if(backOrForward === 255 && previousOrNext != 0) history.pushState({'did':did,'search':searchQueryRaw},null,url);
+  else history.replaceState({'did':did,'search':searchQueryRaw},null,url);
   document.title = images[imgIndex-1].nextElementSibling.children[0].innerText + ' | ' + images[imgIndex-1].nextElementSibling.children[1].innerText;
   backOrForward = previousOrNext;
   setTimeout(() => {relatedScrollLocked = false;}, 50);
@@ -180,7 +192,8 @@ async function turnPageR(e, _did) {
   relatedScrollLocked = false;
   get_related();
   viewerbg.scrollTop = 0;
-  if(e.type !== 'pop') history.pushState({'did':did,'search':searchQueryRaw},null);
+  const url = (searchQueryRaw) ? '?search='+encodeURIComponent(searchQueryRaw)+'&did='+did : '?did='+did;
+  if(e.type !== 'pop') history.pushState({'did':did,'search':searchQueryRaw},null,url);
   document.title = da.title + ' | ' + da.author.username;
   return false;
 }
@@ -271,7 +284,7 @@ window.onpopstate = function(event) { //history api
       offset = 0;
       imgCount = 1;
       container.innerHTML = '';
-      DA_API('recommend').then(z => {prop(z)})
+      DA_API('recommend').then(z => {prop(z)});
     }
     viewer('none',null,true);
   }
