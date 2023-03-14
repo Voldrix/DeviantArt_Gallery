@@ -40,8 +40,10 @@ else
 if(token) {
   searchQueryRaw = new URLSearchParams(location.search).get('search');
   did = new URLSearchParams(location.search).get('did');
-  if(searchQueryRaw)
+  if(searchQueryRaw) {
+    propcount = 2;
     searchDA(searchQueryRaw,null,false);
+  }
   else {
     DA_API('dd').then(z => {prop(z)});
     DA_API('feed').then(z => {prop(z)});
@@ -90,7 +92,7 @@ function prop(y) {
     box.appendChild(img);
     let title = document.createElement('span');
     title.classList.add('title');
-    title.innerHTML = `<a href="${x.url}" target=_blank>${x.title}</a><div class=usericon><a href="https://www.deviantart.com/${x.author.username}/gallery/all" onclick="event.preventDefault();searchDA('@${x.author.username}')" target=_blank>${x.author.username}<img src="${x.author.usericon}" /></a></div>`;
+    title.innerHTML = `<a href="${x.url}" target=_blank>${x.title}</a><div class=usericon><a href="?search=%40${x.author.username}&did=${x.deviationid}" onclick="event.preventDefault();searchDA('@${x.author.username}')">${x.author.username}<img src="${x.author.usericon}" /></a></div>`;
     box.appendChild(title);
     container.appendChild(box);
   }
@@ -107,8 +109,7 @@ function relatedimgs(y) {
     for(let x of z) {
       if(x.thumbs.length == 0 || !('content' in x)) continue;
       let anchor = document.createElement('a');
-      anchor.href = x.url;
-      anchor.setAttribute('target', '_blank');
+      anchor.href = '?search=@'+ x.author.username + '&did=' + x.deviationid;
       anchor.setAttribute('onclick', 'turnPageR(event,\'' + x.deviationid + '\')');
       let img = document.createElement('img');
       img.width = x.thumbs[1].width;
@@ -187,7 +188,7 @@ async function turnPageR(e, _did) {
   var da = await DA_API('get_deviation');
   fullViewImg.src = da.content.src;
   description.innerHTML = new Date(1000 * da.published_time).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
-  head.innerHTML = `<a href="${da.url}" target=_blank>${da.title}</a><div class=usericon><a href="https://www.deviantart.com/${da.author.username}/gallery/all" onclick="event.preventDefault();searchDA('@${da.author.username}')" target=_blank>${da.author.username}<img src="${da.author.usericon}" /></a></div>`;
+  head.innerHTML = `<a href="${da.url}" target=_blank>${da.title}</a><div class=usericon><a href="?search=%40${da.author.username}" onclick="event.preventDefault();searchDA('@${da.author.username}')">${da.author.username}<img src="${da.author.usericon}" /></a></div>`;
   document.getElementById('tags').innerHTML = fromuser.innerHTML = fromda.innerHTML = fromlists.innerHTML = '';
   relatedScrollLocked = false;
   get_related();
@@ -216,7 +217,7 @@ function get_tags(k) {
   }
   description.innerHTML += '<br>' + d;
   for(let g of k.metadata[0].tags)
-    links += '<a onclick=searchDA("#'+g.tag_name+'")>#'+g.tag_name+'</a>';
+    links += '<a href="?search=%23'+g.tag_name+'" onclick=searchDA("#'+g.tag_name+'")>#'+g.tag_name+'</a>';
   document.getElementById('tags').innerHTML = links;
 }
 
@@ -234,7 +235,7 @@ function view_search(openOrClose = 'open') {
 
 function searchDA(_query, popState=false) {
   const _searchQuery = _query || document.getElementById('searchbox').value;
-  if(!_searchQuery) return;
+  if(!_searchQuery.trim()) return;
   if(_searchQuery.startsWith('http')) {search_url(_searchQuery); return;}
   searchQueryRaw = _searchQuery;
   searchQuery = _searchQuery.replace(/[@#;:$<>"{}|~`*%]+/g,'');

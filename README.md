@@ -34,9 +34,8 @@ __Click Controls__
 - thumbnail - opens image
 - image title - opens image on deviantart, in new tab
 - image username - loads user's gallery
-- image username (opened in new tab) - loads user's gallery on deviantart
 - related image - loads full size image in viewer
-- related image (opened in new tab) - loads page on deviantart
+- related image (opened in new tab) - loads user's gallery and displays selected image
 - tag - search for that tag
 - hover title in viewer - displays description (only once related images have been requested/loaded)
 - hover related image - see image title as HTML title
@@ -56,7 +55,7 @@ left, right, close\
 swipe left, swipe right (only on mobile)
 
 __History__\
-uses the browser history API so you can navigate back even though the URL doesn't change, but the title will
+uses the browser history API so you can navigate back to previously viewed images
 
 ### Live Demo
 [https://voldrixia.com/da/](https://voldrixia.com/da/)
