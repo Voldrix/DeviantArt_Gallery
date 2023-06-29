@@ -3,6 +3,9 @@
 
 The DeviantArt API plugged into my unbranded seamless image gallery ([Chicnado](https://github.com/Voldrix/Chicnado))
 
+### Live Demo
+[https://voldrixia.com/da/](https://voldrixia.com/da/)
+
 ## Features
 - images load in pop-up, keeping you on the same page
 - related images are larger and easier to see
@@ -56,9 +59,6 @@ swipe left, swipe right (only on mobile)
 
 __History__\
 uses the browser history API so you can navigate back to previously viewed images
-
-### Live Demo
-[https://voldrixia.com/da/](https://voldrixia.com/da/)
 
 #### Contributing
 pull requests are welcome, especially for mobile compatibility, as I haven't tested that extensively\
