@@ -152,6 +152,7 @@ function viewer(openOrClose, pageNum, popState=false) {
       imgIndex = pageNum;
       history.pushState(null,null);
       turnPage(0);
+      viewerbg.focus({preventScroll: true, focusVisible: false});
     }
   }
   else { //close
